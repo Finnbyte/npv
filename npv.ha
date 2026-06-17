@@ -96,6 +96,14 @@ fn is_date(input: str) bool = {
 	return (allRunesAreDigits == true && xCount == 0 && (dotCount >= 0 && dotCount <= 1)) || (dotCount == 1 && (xCount > 0 && xCount <= 2));
 };
 
+fn usagehelp(args: []str) void = {
+	fmt::printfln("usage: {}", args[0])!;
+	fmt::printfln("       To get specific date: {} 11.12", args[0])!;
+	fmt::printfln("       To get specific name: {} Kauko", args[0])!;
+	fmt::printfln("       To use date/month wildcards: {} x.x", args[0])!;
+	os::exit(0);
+};
+
 export fn main() void = {
 	const args = os::args;
 	if (len(args) == 1) {
@@ -120,6 +128,10 @@ export fn main() void = {
 		};
 
 		return;
+	};
+
+	if (args[1] == "-h" || args[1] == "--help") {
+		usagehelp(args);
 	};
 
 	const input = args[1];
