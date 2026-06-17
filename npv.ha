@@ -107,17 +107,16 @@ fn usagehelp(args: []str) void = {
 export fn main() void = {
 	const args = os::args;
 	if (len(args) == 1) {
-		const current = date::now();
-		const day = date::day(&current);
-		const month = date::month(&current);
 		let target_dates: []str = [];
+
 		for (let i = 0; i < 7; i += 1) {
-			const d = date::add(current, i * time::HOUR * 24);
+			const d = date::add(date::now(), i * (time::HOUR * 24));
 			const dd = date::day(&d);
-			const m = strconv::itos(date::month(&d));
+			const m = date::month(&d);
 
 			const formatted_date = fmt::asprintf("{}.{}", dd, m);
-			append(target_dates, formatted_date);
+			const normalized_date = normalize_input_date(formatted_date);
+			append(target_dates, normalized_date);
 		};
 
 		const matches = search_entries_for_dates(target_dates);
