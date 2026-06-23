@@ -97,6 +97,7 @@ fn is_date(input: str) bool = {
 };
 
 fn usagehelp(args: []str) void = {
+	fmt::printfln("npv is a simple CLI for looking up finnish namedates.")!;
 	fmt::printfln("usage: {}", args[0])!;
 	fmt::printfln("       To get specific date: {} 11.12", args[0])!;
 	fmt::printfln("       To get specific name: {} Kauko", args[0])!;
