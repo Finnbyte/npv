@@ -9,7 +9,7 @@ use os;
 
 fn search_entry_for_name(name: str) nullable *Entry = {
 	for (let entry .. NAMEDATES) {
-		if (strings::contains(ascii::strlower(entry[1]),  ascii::strlower(name))) {
+		if (strings::contains(ascii::strlower(entry[1])!,  ascii::strlower(name)!)) {
 			return &entry;
 		};
 	};
@@ -21,15 +21,15 @@ fn search_entries_for_dates(dates: []str) nullable *[]Entry = {
 	for (const d .. dates) {
 		for (const entry .. NAMEDATES) {
 			if (entry[0] == d) {
-				append(matches, entry);
+				append(matches, entry)!;
 				break;
 			};
-			const entryDateParts =  strings::split(entry[0], ".");
-			const dParts =  strings::split(d, ".");
+			const entryDateParts =  strings::split(entry[0], ".")!;
+			const dParts =  strings::split(d, ".")!;
 			const matchesDate = dParts[0] == "x" || dParts[0] == entryDateParts[0];
 			const matchesMonth = dParts[1] == "x" || dParts[1] == entryDateParts[1];
 			if (matchesDate && matchesMonth) {
-				append(matches, entry);
+				append(matches, entry)!;
 			};
 
 		};
@@ -57,17 +57,17 @@ fn error(message: str) void = {
 };
 
 fn normalize_input_date(input: str) str = {
-	let parts = strings::split(input, ".");
+	let parts = strings::split(input, ".")!;
 
 	if (len(parts) == 1) {
-		append(parts, "x");
+		append(parts, "x")!;
 	};
 
 	for (let i: size = 0; i < len(parts); i += 1) {
-		if (parts[i] != "x") parts[i] = strings::lpad(parts[i], '0', 2);
+		if (parts[i] != "x") parts[i] = strings::lpad(parts[i], '0', 2)!;
 	};
 
-	const date = fmt::asprintf("{}.{}", parts[0], parts[1]);
+	const date = fmt::asprintf("{}.{}", parts[0], parts[1])!;
 	return date;
 };
 
@@ -115,9 +115,9 @@ export fn main() void = {
 			const dd = date::day(&d);
 			const m = date::month(&d);
 
-			const formatted_date = fmt::asprintf("{}.{}", dd, m);
+			const formatted_date = fmt::asprintf("{}.{}", dd, m)!;
 			const normalized_date = normalize_input_date(formatted_date);
-			append(target_dates, normalized_date);
+			append(target_dates, normalized_date)!;
 		};
 
 		const matches = search_entries_for_dates(target_dates);
